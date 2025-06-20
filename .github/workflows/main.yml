@@ -20,6 +20,8 @@ jobs:
       - uses: actions/checkout@v3
       
       - name: Load configuration from repo
+        env:
+         PASS: ${{ env.PASS }}
         run: |
           find .
           cat config
