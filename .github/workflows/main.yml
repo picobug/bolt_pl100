@@ -25,7 +25,7 @@ jobs:
           cat config
           cat config >> $GITHUB_ENV
           sed -i 's,'REPLACE_IP','192.168.1.1',g' ./files/etc/uci-defaults/999-init
-          sed -i 's,'REPLACE_PASS','"$PWD"',g' ./files/etc/uci-defaults/999-init
+          sed -i 's,'REPLACE_PASS','"$PWDWRT"',g' ./files/etc/uci-defaults/999-init
           sed -i 's,'REPLACE','PL100',g' ./files/etc/uci-defaults/999-init
           sed -i '/^exit*/i cp /etc/bin/lte /sbin/lte' ./files/etc/uci-defaults/999-init
           sed -i '/^exit*/i rm -rf /etc/bin' ./files/etc/uci-defaults/999-init
