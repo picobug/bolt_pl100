@@ -21,7 +21,7 @@ jobs:
       
       - name: Load configuration from repo
         env:
-         PASS: ${{ env.PASS }}
+         PASS: ${{ secrets.PASS }}
         run: |
           find .
           cat config
