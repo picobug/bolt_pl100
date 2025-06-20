@@ -1,13 +1,21 @@
 
-image=ramips-mt7621
+image=ramips/mt7621
 
 profile=bolt_arion
 
 openwrt_version=24.10.1
 
-packages=luci-app-sqm luci-app-https-dns-proxy luci zram-swap telnet-bsd screen
+packages=luci-app-sqm luci-app-https-dns-proxy luci zram-swap telnet-bsd screen luci-theme-argon luci-app-argon-config
 
-files=files
+patches=./patches
+
+files=./files
+
+pkg_dir=./packages
+
+bin_dir=./bin
+
+json_file=
 
 disabled_services=
 

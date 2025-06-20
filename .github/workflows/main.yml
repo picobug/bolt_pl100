@@ -24,18 +24,30 @@ jobs:
           find .
           cat config
           cat config >> $GITHUB_ENV
-          ls -lha
        
+      # - name: Build openwrt image
+      #   uses: izer-xyz/openwrt-imagebuilder-action@v6
+      #   with:
+      #     image: ${{ env.image }}
+      #     profile: ${{ env.profile }}
+      #     openwrt-version: ${{ env.openwrt_version }}
+      #     packages: ${{ env.packages }}
+      #     debug: ${{ env.debug }}
+      #     files: files
+      #     disabled-services: ${{ env.disabled_services }}
+      
       - name: Build openwrt image
-        uses: izer-xyz/openwrt-imagebuilder-action@v6
+        uses: tidylabs/action-openwrt-imagebuilder@main
         with:
-          image: ${{ env.image }}
           profile: ${{ env.profile }}
-          openwrt-version: ${{ env.openwrt_version }}
+          target: ${{ env.image }}
+          version: ${{ env.openwrt_version }}
           packages: ${{ env.packages }}
-          debug: ${{ env.debug }}
-          files: files
-          disabled-services: ${{ env.disabled_services }}
+          patches_dir: ${{ env.patches }}
+          files_dir: ${{ env.files }}
+          packages_dir: ${{ env.pkg_dir }}
+          bin_dir: ${{ env.bin_dir }}
+          json_file: ${{ env.json_file }}
       
       - name: Release
         uses: softprops/action-gh-release@v1
