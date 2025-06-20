@@ -25,7 +25,6 @@ jobs:
         run: |
           find .
           cat config
-          echo "$PASS _ ${{ env.PASS }} _ test"
           cat config >> $GITHUB_ENV
           sed -i 's,'REPLACE_IP','192.168.1.1',g' ./files/etc/uci-defaults/999-init
           sed -i 's,'REPLACE_PASS','"${{ env.PASS }}"',g' ./files/etc/uci-defaults/999-init
@@ -33,32 +32,31 @@ jobs:
           sed -i '/^exit*/i cp /etc/bin/lte /sbin/lte' ./files/etc/uci-defaults/999-init
           sed -i '/^exit*/i rm -rf /etc/bin' ./files/etc/uci-defaults/999-init
           sed -i '/^exit*/i screen -dmS ltewatcher lte' ./files/etc/rc.local
-          cat ./files/etc/uci-defaults/999-init
        
-      # - name: Build openwrt image
-      #   uses: izer-xyz/openwrt-imagebuilder-action@v6
-      #   with:
-      #     image: ${{ env.image }}
-      #     profile: ${{ env.profile }}
-      #     openwrt-version: ${{ env.openwrt_version }}
-      #     packages: ${{ env.packages }}
-      #     debug: ${{ env.debug }}
-      #     files: files
-      #     disabled-services: ${{ env.disabled_services }}
+      - name: Build openwrt image
+        uses: izer-xyz/openwrt-imagebuilder-action@v6
+        with:
+          image: ${{ env.image }}
+          profile: ${{ env.profile }}
+          openwrt-version: ${{ env.openwrt_version }}
+          packages: ${{ env.packages }}
+          debug: ${{ env.debug }}
+          files: files
+          disabled-services: ${{ env.disabled_services }}
       
-      # - name: Release
-      #   uses: softprops/action-gh-release@v1
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.TOKEN }}
-      #   with:
-      #     tag_name: v${{ env.openwrt_version }}-${{ github.run_number }}
-      #     body: |
-      #       Custom OpenWrt build ...
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: v${{ env.openwrt_version }}-${{ github.run_number }}
+          body: |
+            Custom OpenWrt build ...
             
-      #       * OpenWrt version: ${{ env.openwrt_version }}
-      #       * Image: ${{ env.image }}
-      #       * Profile: ${{ env.profile }}
-      #       * Packages: ${{ env.packages }}
+            * OpenWrt version: ${{ env.openwrt_version }}
+            * Image: ${{ env.image }}
+            * Profile: ${{ env.profile }}
+            * Packages: ${{ env.packages }}
             
-      #     files: |
-      #       bin/*  
+          files: |
+            bin/*  
