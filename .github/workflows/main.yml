@@ -1,0 +1,55 @@
+
+name: build
+
+on:
+  push:
+    branches: [ "main" ]
+  
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+
+  create-image:
+  
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      
+      - uses: actions/checkout@v3
+      
+      - name: Load configuration from repo
+        run: |
+          find .
+          cat config
+          cat config >> $GITHUB_ENV
+          ls -lha
+       
+      - name: Build openwrt image
+        uses: izer-xyz/openwrt-imagebuilder-action@v6
+        with:
+          image: ${{ env.image }}
+          profile: ${{ env.profile }}
+          openwrt-version: ${{ env.openwrt_version }}
+          packages: ${{ env.packages }}
+          debug: ${{ env.debug }}
+          files: files
+          disabled-services: ${{ env.disabled_services }}
+      
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+        with:
+          tag_name: v${{ env.openwrt_version }}-${{ github.run_number }}
+          body: |
+            Custom OpenWrt build ...
+            
+            * OpenWrt version: ${{ env.openwrt_version }}
+            * Image: ${{ env.image }}
+            * Profile: ${{ env.profile }}
+            * Packages: ${{ env.packages }}
+            
+          files: |
+            bin/*  

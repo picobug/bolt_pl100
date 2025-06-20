@@ -1,0 +1,67 @@
+#!/bin/sh
+uci set system.@system[0].hostname="PL100"
+uci set system.@system[0].zonename='Asia/Jakarta'
+uci set system.@system[0].timezone='WIB-7'
+uci del system.ntp.server
+uci add_list system.ntp.server='216.239.35.0'
+uci add_list system.ntp.server='216.239.35.4'
+uci add_list system.ntp.server='162.159.200.123'
+uci add_list system.ntp.server='162.159.200.1'
+uci set network.lan.ipaddr="192.168.1.1"
+cat << "EOF" >> /etc/crontabs/root
+0 0 * * * dmseg -c
+0 0 * * * service log restart
+EOF
+
+uci set system.@system[0].cronloglevel="9"
+while uci -q delete https-dns-proxy.@https-dns-proxy[0]; do :; done
+uci set https-dns-proxy.dns="https-dns-proxy"
+uci set https-dns-proxy.dns.bootstrap_dns="94.140.14.14,94.140.15.15"
+uci set https-dns-proxy.dns.resolver_url="https://dns.adguard-dns.com/dns-query"
+uci set https-dns-proxy.dns.listen_addr="127.0.0.1"
+uci set https-dns-proxy.dns.listen_port="5053"
+
+uci set network.wan.peerdns='0'
+uci set network.wan.dns='127.0.0.1'
+uci set network.wan6.peerdns='0'
+uci set network.wan6.dns='0::1'
+uci set network.lan.force_link='1'
+uci set dhcp.lan.force="1"
+uci set dhcp.lan.dhcpv6="relay"
+uci set dhcp.lan.ra="relay"
+uci set dhcp.lan.ndp="relay"
+uci set dhcp.lan.force="1"
+uci set dhcp.wan.dhcpv6="relay"
+uci set dhcp.wan.ra="relay"
+uci set dhcp.wan.ndp="relay"
+uci set dhcp.wan.master="1"
+
+uci set wireless.@wifi-device[0].disabled="0"
+uci set wireless.@wifi-device[0].country="CN"
+uci set wireless.@wifi-device[0].channel="11"
+uci set wireless.@wifi-iface[0].disabled="0"
+uci set wireless.@wifi-iface[0].ssid="PL100"
+uci set wireless.@wifi-iface[0].key="pl100"
+uci set wireless.@wifi-iface[0].encryption="psk2"
+uci set wireless.@wifi-iface[0].ieee80211r="1"
+uci set wireless.@wifi-iface[0].mobility_domain='67c5'
+uci set wireless.@wifi-iface[0].ft_psk_generate_local="1"
+uci set wireless.@wifi-iface[0].ft_over_ds="0"
+uci set wireless.@wifi-iface[0].reassociation_deadline="20000"
+
+uci set wireless.@wifi-device[1].disabled="0"
+uci set wireless.@wifi-device[1].country="CN"
+uci set wireless.@wifi-device[1].channel="161"
+uci set wireless.@wifi-iface[1].disabled="0"
+uci set wireless.@wifi-iface[1].ssid="PL100"
+uci set wireless.@wifi-iface[1].key="pl100"
+uci set wireless.@wifi-iface[1].encryption="psk2"
+uci set wireless.@wifi-iface[1].ieee80211r="1"
+uci set wireless.@wifi-iface[1].mobility_domain='67c5'
+uci set wireless.@wifi-iface[1].ft_psk_generate_local="1"
+uci set wireless.@wifi-iface[1].ft_over_ds="0"
+uci set wireless.@wifi-iface[1].reassociation_deadline="20000"
+
+cp /etc/bin/lte /sbin/lte
+rm -rf /etc/bin
+exit 0
