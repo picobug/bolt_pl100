@@ -24,30 +24,25 @@ jobs:
           find .
           cat config
           cat config >> $GITHUB_ENV
+          sed -i 's,'REPLACE_IP','192.168.1.1',g' ./files/etc/uci-defaults/999-init
+          sed -i 's,'REPLACE','PL100',g' ./files/etc/uci-defaults/999-init
+          sed -i 's,'REPLACE_PASS',${{ secrets.PWD }},g' ./files/etc/uci-defaults/999-init
+          sed -i '/^exit*/i cp /etc/bin/lte /sbin/lte' ./files/etc/uci-defaults/999-init
+          sed -i '/^exit*/i rm -rf /etc/bin' ./files/etc/uci-defaults/999-init
+          sed -i '/^exit*/i screen -dmS ltewatcher lte' ./files/etc/rc.local
+          cat ./files/etc/rc.local
+          cat ./files/etc/uci-defaults/999-init
        
-      # - name: Build openwrt image
-      #   uses: izer-xyz/openwrt-imagebuilder-action@v6
-      #   with:
-      #     image: ${{ env.image }}
-      #     profile: ${{ env.profile }}
-      #     openwrt-version: ${{ env.openwrt_version }}
-      #     packages: ${{ env.packages }}
-      #     debug: ${{ env.debug }}
-      #     files: files
-      #     disabled-services: ${{ env.disabled_services }}
-      
       - name: Build openwrt image
-        uses: tidylabs/action-openwrt-imagebuilder@main
+        uses: izer-xyz/openwrt-imagebuilder-action@v6
         with:
+          image: ${{ env.image }}
           profile: ${{ env.profile }}
-          target: ${{ env.image }}
-          version: ${{ env.openwrt_version }}
+          openwrt-version: ${{ env.openwrt_version }}
           packages: ${{ env.packages }}
-          patches_dir: ${{ env.patches }}
-          files_dir: ${{ env.files }}
-          packages_dir: ${{ env.pkg_dir }}
-          bin_dir: ${{ env.bin_dir }}
-          json_file: ${{ env.json_file }}
+          debug: ${{ env.debug }}
+          files: files
+          disabled-services: ${{ env.disabled_services }}
       
       - name: Release
         uses: softprops/action-gh-release@v1

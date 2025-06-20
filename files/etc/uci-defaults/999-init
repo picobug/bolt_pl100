@@ -1,5 +1,5 @@
 #!/bin/sh
-uci set system.@system[0].hostname="PL100"
+uci set system.@system[0].hostname="REPLACE"
 uci set system.@system[0].zonename='Asia/Jakarta'
 uci set system.@system[0].timezone='WIB-7'
 uci del system.ntp.server
@@ -7,7 +7,7 @@ uci add_list system.ntp.server='216.239.35.0'
 uci add_list system.ntp.server='216.239.35.4'
 uci add_list system.ntp.server='162.159.200.123'
 uci add_list system.ntp.server='162.159.200.1'
-uci set network.lan.ipaddr="192.168.1.1"
+uci set network.lan.ipaddr="REPLACE_IP"
 cat << "EOF" >> /etc/crontabs/root
 0 0 * * * dmseg -c
 0 0 * * * service log restart
@@ -40,8 +40,8 @@ uci set wireless.@wifi-device[0].disabled="0"
 uci set wireless.@wifi-device[0].country="CN"
 uci set wireless.@wifi-device[0].channel="11"
 uci set wireless.@wifi-iface[0].disabled="0"
-uci set wireless.@wifi-iface[0].ssid="PL100"
-uci set wireless.@wifi-iface[0].key="pl100"
+uci set wireless.@wifi-iface[0].ssid="REPLACE"
+uci set wireless.@wifi-iface[0].key="REPLACE_PASS"
 uci set wireless.@wifi-iface[0].encryption="psk2"
 uci set wireless.@wifi-iface[0].ieee80211r="1"
 uci set wireless.@wifi-iface[0].mobility_domain='67c5'
@@ -53,8 +53,8 @@ uci set wireless.@wifi-device[1].disabled="0"
 uci set wireless.@wifi-device[1].country="CN"
 uci set wireless.@wifi-device[1].channel="161"
 uci set wireless.@wifi-iface[1].disabled="0"
-uci set wireless.@wifi-iface[1].ssid="PL100"
-uci set wireless.@wifi-iface[1].key="pl100"
+uci set wireless.@wifi-iface[1].ssid="REPLACE"
+uci set wireless.@wifi-iface[1].key="REPLACE_PASS"
 uci set wireless.@wifi-iface[1].encryption="psk2"
 uci set wireless.@wifi-iface[1].ieee80211r="1"
 uci set wireless.@wifi-iface[1].mobility_domain='67c5'
@@ -62,6 +62,4 @@ uci set wireless.@wifi-iface[1].ft_psk_generate_local="1"
 uci set wireless.@wifi-iface[1].ft_over_ds="0"
 uci set wireless.@wifi-iface[1].reassociation_deadline="20000"
 
-cp /etc/bin/lte /sbin/lte
-rm -rf /etc/bin
 exit 0
