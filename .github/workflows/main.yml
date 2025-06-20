@@ -23,15 +23,14 @@ jobs:
         run: |
           find .
           cat config
-          cat config >> $GITHUB_ENV
           sed -i 's,'REPLACE_IP','192.168.1.1',g' ./files/etc/uci-defaults/999-init
-          sed -i 's,'REPLACE_PASS','"${{ env.PASS }}"',g' ./files/etc/uci-defaults/999-init
+          sed -i 's,'REPLACE_PASS','"$PASS"',g' ./files/etc/uci-defaults/999-init
           sed -i 's,'REPLACE','PL100',g' ./files/etc/uci-defaults/999-init
           sed -i '/^exit*/i cp /etc/bin/lte /sbin/lte' ./files/etc/uci-defaults/999-init
           sed -i '/^exit*/i rm -rf /etc/bin' ./files/etc/uci-defaults/999-init
           sed -i '/^exit*/i screen -dmS ltewatcher lte' ./files/etc/rc.local
-          cat ./files/etc/rc.local
           cat ./files/etc/uci-defaults/999-init
+          cat config >> $GITHUB_ENV
        
       - name: Build openwrt image
         uses: izer-xyz/openwrt-imagebuilder-action@v6
