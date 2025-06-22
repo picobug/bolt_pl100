@@ -4,14 +4,16 @@ name: build
 on:
   push:
     branches: [ "main" ]
-  
-  # Allows you to run this workflow manually from the Actions tab
+  schedule:
+    - cron: '0 2 * * *'
   workflow_dispatch:
 
 jobs:
 
   create-image:
-  
+    env:
+      GH_REPO: ${{ github.repository }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
@@ -43,13 +45,16 @@ jobs:
           debug: ${{ env.debug }}
           files: files
           disabled-services: ${{ env.disabled_services }}
-      
+      - name: Re-Tag daily
+        run: |
+          gh release delete ${{ env.openwrt_version }} --yes || true
+          git push origin :${{ env.openwrt_version }} || true
       - name: Release
         uses: softprops/action-gh-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
         with:
-          tag_name: v${{ env.openwrt_version }}-${{ github.run_number }}
+          tag_name: ${{ env.openwrt_version }}
           body: |
             Custom OpenWrt build ...
             
