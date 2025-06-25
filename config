@@ -3,7 +3,7 @@ image=ramips-mt7621
 
 profile=bolt_arion
 
-openwrt_version=24.10.1
+openwrt_version=24.10.2
 
 packages=luci-app-sqm luci-app-https-dns-proxy luci zram-swap telnet-bsd screen luci-theme-argon luci-app-argon-config
 
