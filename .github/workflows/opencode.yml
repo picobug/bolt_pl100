@@ -26,6 +26,6 @@ jobs:
         env:
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
         with:
-          model: openrouter/free
+          model: openrouter/openrouter/free
           # share: true
           github_token: ${{ secrets.GITHUB_TOKEN }}
